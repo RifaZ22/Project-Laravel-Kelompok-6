@@ -30,7 +30,7 @@
             </div>
         </div>
     @empty
-        <div class="alert alert-info">Keranjang kosong😅</div>
+        <div class="alert alert-info">Keranjang kosong,silahkan membeli😅</div>
     @endforelse
 </div>
 
