@@ -56,7 +56,6 @@
             </table>
 
             <div class="mt-6 flex justify-between items-center">
-                <a href="{{ route('products.index') }}" class="text-blue-600 hover:underline">← Lanjut Belanja</a>
                 <div class="text-xl font-semibold text-gray-800">
                     Total: Rp{{ number_format($totalPrice, 0, ',', '.') }}
                 </div>
