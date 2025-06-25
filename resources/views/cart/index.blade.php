@@ -1,75 +1,96 @@
 @extends('layouts.app')
 
-@section('title', 'Keranjang Belanja')
-
 @section('content')
-<div class="max-w-6xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
-    <h1 class="text-3xl font-bold mb-6 text-gray-800">🛒 Keranjang Belanja Kamu</h1>
+<style>
+    body {
+        background: #f5f7fa;
+        font-family: 'Segoe UI', sans-serif;
+    }
 
-    @if(session('success'))
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-            {{ session('success') }}
-        </div>
-    @endif
+    .cart-container {
+        max-width: 900px;
+        margin: 50px auto;
+        padding: 30px;
+        background: #ffffff;
+        border-radius: 18px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        text-align: center;
+    }
 
-    @if($cartItems->count() > 0)
-        <div class="overflow-x-auto bg-white shadow rounded-lg p-6">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">Produk</th>
-                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">Harga</th>
-                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">Jumlah</th>
-                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">Subtotal</th>
-                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    @foreach($cartItems as $item)
-                    <tr>
-                        <td class="px-4 py-4 flex items-center space-x-4">
-                            <img src="{{ asset('storage/' . $item->product->image) }}" alt="{{ $item->product->name }}" class="w-16 h-16 object-cover rounded">
-                            <span class="text-gray-800 font-medium">{{ $item->product->name }}</span>
-                        </td>
-                        <td class="px-4 py-4 text-gray-600">Rp{{ number_format($item->product->price, 0, ',', '.') }}</td>
-                        <td class="px-4 py-4">
-                            <form action="{{ route('cart.update', $item->id) }}" method="POST" class="flex items-center gap-2">
-                                @csrf
-                                @method('PUT')
-                                <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" class="w-16 border rounded px-2 py-1 text-center">
-                                <button type="submit" class="text-blue-500 hover:underline text-sm">Update</button>
-                            </form>
-                        </td>
-                        <td class="px-4 py-4 font-semibold text-gray-800">
-                            Rp{{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}
-                        </td>
-                        <td class="px-4 py-4">
-                            <form action="{{ route('cart.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Hapus item ini dari keranjang?')">
-                                @csrf
-                                @method('DELETE')
-                                <button class="text-red-600 hover:text-red-800 text-sm">Hapus</button>
-                            </form>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+    .cart-header {
+        font-size: 32px;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-            <div class="mt-6 flex justify-between items-center">
-                <div class="text-xl font-semibold text-gray-800">
-                    Total: Rp{{ number_format($totalPrice, 0, ',', '.') }}
-                </div>
-                <a href="{{ route('checkout.index') }}" class="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700 shadow">
-                    Checkout Sekarang
-                </a>
-            </div>
+    .cart-header i {
+        font-size: 30px;
+        color: #3b82f6;
+        margin-right: 12px;
+    }
+
+    .cart-empty-icon {
+        font-size: 70px;
+        color: #cbd5e1;
+        margin-bottom: 15px;
+    }
+
+    .cart-message {
+        font-size: 20px;
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    .cart-subtext {
+        color: #888;
+        font-size: 15px;
+        margin-bottom: 25px;
+    }
+
+    .btn-shop {
+        padding: 12px 30px;
+        background: linear-gradient(to right, #3b82f6, #6366f1);
+        color: white;
+        text-decoration: none;
+        border-radius: 10px;
+        font-weight: bold;
+        transition: background 0.3s, transform 0.2s;
+        display: inline-block;
+    }
+
+    .btn-shop:hover {
+        background: linear-gradient(to right, #2563eb, #4f46e5);
+        transform: translateY(-2px);
+    }
+
+    .fade-in {
+        animation: fadeIn 0.5s ease-in-out both;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div class="cart-container fade-in">
+    <div class="cart-header">
+        <i>🛍️</i> Keranjang Belanja Kamu
+    </div>
+
+    @if(count($cartItems) === 0)
+        <div class="cart-empty">
+            <div class="cart-empty-icon">🛒</div>
+            <div class="cart-message">Keranjang kamu kosong</div>
+            <div class="cart-subtext">Yuk, Tambahkan sepatu keren ke dalam keranjangmu!</div>
+            <a href="{{ route('products.index') }}" class="btn-shop">Belanja Sekarang</a>
         </div>
     @else
-        <div class="text-center bg-white p-8 rounded-lg shadow">
-            <h2 class="text-xl font-semibold mb-2 text-gray-700">Keranjang kamu kosong 😢</h2>
-            <p class="text-gray-500 mb-4">Yuk tambahkan produk ke keranjang!</p>
-            <a href="{{ route('products.index') }}" class="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700">Belanja Sekarang</a>
-        </div>
+        {{-- Nanti di sini kamu bisa menambahkan tampilan list produk --}}
     @endif
 </div>
 @endsection
