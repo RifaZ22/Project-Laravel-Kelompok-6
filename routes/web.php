@@ -17,3 +17,4 @@ Route::get('/checkout/konfirmasi', [CheckoutController::class, 'konfirmasi'])->n
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add/{productId}', [CartController::class, 'add'])->name('cart.add');
 Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+Route::get('/products', [ProductController::class,'index'])->name('products.index');
