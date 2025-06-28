@@ -9,21 +9,21 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-   public function up()
-{
-    Schema::create('orders', function (Blueprint $table) {
-        $table->id();
-        $table->unsignedBigInteger('user_id');
-        $table->string('nama');
-        $table->string('alamat');
-        $table->string('no_hp');
-        $table->decimal('total_harga', 10, 2);
-        $table->timestamps();
+    public function up()
+    {
+        Schema::create('orders', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('user_id')->nullable(); // ✅ bikin dulu, nullable
+            $table->string('nama');
+            $table->string('alamat');
+            $table->string('no_hp');
+            $table->decimal('total_harga', 10, 2);
+            $table->timestamps();
 
-        $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-    });
-}
-
+            // ✅ baru di-set foreign key-nya
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        });
+    }
 
     /**
      * Reverse the migrations.

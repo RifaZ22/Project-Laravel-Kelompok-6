@@ -10,6 +10,24 @@ class CheckoutController extends Controller
 {
     public function showCheckout()
     {
+        // Dummy cart data untuk testing (hapus nanti kalau fitur cart temanmu sudah aktif)
+        if (!session()->has('cart') || count(session('cart')) == 0) {
+            session([
+                'cart' => [
+                    1 => [
+                        'nama' => 'Sepatu Converse',
+                        'harga' => 300000,
+                        'jumlah' => 2
+                    ],
+                    2 => [
+                        'nama' => 'Sepatu Vans',
+                        'harga' => 250000,
+                        'jumlah' => 1
+                    ]
+                ]
+            ]);
+        }
+
         $cart = session()->get('cart', []);
         return view('checkout.index', compact('cart'));
     }
@@ -29,25 +47,25 @@ class CheckoutController extends Controller
         }
 
         $order = Order::create([
-            'user_id' => null,
-            'nama' => $validated['nama'],
-            'alamat' => $validated['alamat'],
-            'no_hp' => $validated['no_hp'],
-            'total_harga' => $total,
+        'nama' => $validated['nama'],
+        'alamat' => $validated['alamat'],
+        'no_hp' => $validated['no_hp'],
+        'total_harga' => $total,
         ]);
+
 
         foreach ($cart as $id => $item) {
             OrderItem::create([
                 'order_id' => $order->id,
                 'produk_id' => $id,
                 'jumlah' => $item['jumlah'],
-                'harga' => $item['harga'],
+                'harga_satuan' => $item['harga'],
             ]);
         }
 
-        session()->forget('cart');
+        session()->forget('cart'); // kosongkan cart setelah pesan
 
-        return redirect()->route('checkout.konfirmasi')->with('success', 'Pesanan berhasil disimpan!');
+        return redirect()->route('checkout.konfirmasi');
     }
 
     public function konfirmasi()
