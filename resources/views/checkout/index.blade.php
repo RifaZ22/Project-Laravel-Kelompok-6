@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Checkout - Toko Sepatu</title>
+    <title>Checkout - Toko Sepatus</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gradient-to-br from-gray-100 to-white min-h-screen font-sans">
