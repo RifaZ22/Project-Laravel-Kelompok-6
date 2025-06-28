@@ -87,7 +87,7 @@
             <div class="cart-empty-icon">🛒</div>
             <div class="cart-message">Keranjang kamu kosong</div>
             <div class="cart-subtext">Yuk, Tambahkan sepatu keren ke dalam keranjangmu!</div>
-            <a href="{{ route('products.index') }}" class="btn-shop">Belanja Sekarang</a>
+            <a href="{{ route('dashboard') }}" class="btn-shop">Belanja Sekarang</a>
         </div>
     @else
         {{-- Nanti di sini kamu bisa menambahkan tampilan list produk --}}

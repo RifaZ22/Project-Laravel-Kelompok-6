@@ -1,20 +1,33 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
+
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect('/checkout');
+    return view('welcome');
 });
 
-// Rute Checkout saja
-Route::get('/checkout', [CheckoutController::class, 'showCheckout'])->name('checkout.index');
-Route::post('/checkout', [CheckoutController::class, 'processCheckout'])->name('checkout.proses');
-Route::get('/checkout/konfirmasi', [CheckoutController::class, 'konfirmasi'])->name('checkout.konfirmasi');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+});
 
-// Rute Cart
+Route::middleware(['auth'])->group(function () {
+    Route::get('/checkout', [CheckoutController::class, 'showCheckout'])->name('checkout.index');
+    Route::post('/checkout', [CheckoutController::class, 'processCheckout'])->name('checkout.proses');
+    Route::get('/checkout/konfirmasi', [CheckoutController::class, 'konfirmasi'])->name('checkout.konfirmasi');
+});
+
+Auth::routes();
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register']);
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+
+require __DIR__.'/auth.php';
+
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::post('/cart/add/{productId}', [CartController::class, 'add'])->name('cart.add');
-Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
-Route::get('/products', [ProductController::class,'index'])->name('products.index');
