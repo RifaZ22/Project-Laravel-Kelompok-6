@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ProductController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -31,3 +32,5 @@ Route::post('/login', [LoginController::class, 'login']);
 require __DIR__.'/auth.php';
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::resource('products', ProductController::class);
+
