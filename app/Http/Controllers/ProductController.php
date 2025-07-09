@@ -82,4 +82,10 @@ class ProductController extends Controller
         return redirect()->route('products.index')
                          ->with('success', 'Produk berhasil dihapus!');
     }
+
+    public function show($id)
+{
+    $product = Product::findOrFail($id);
+    return view('products.show', compact('product'));
+}
 }

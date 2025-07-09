@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Address;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,12 +15,23 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function edit(Request $request): View
-    {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
-    }
+    public function edit()
+{
+    $user = Auth::user();
+    return view('profile.myprofile', compact('user')); // GANTI sesuai nama file kamu
+}
+
+
+    public function show()
+{
+    $user = auth()->user();
+
+    // Ambil semua alamat milik user
+    $addresses = Address::where('user_id', $user->id)->get();
+
+    return view('profile.myprofile', compact('user', 'addresses'));
+}
+
 
     /**
      * Update the user's profile information.

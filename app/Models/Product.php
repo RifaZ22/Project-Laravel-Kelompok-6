@@ -18,4 +18,10 @@ class Product extends Model
     {
         return $this->hasMany(Cart::class);
     }
+
+    public function favorites()
+{
+    return $this->hasMany(Favorite::class);
+}
+
 }

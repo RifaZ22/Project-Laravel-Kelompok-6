@@ -613,7 +613,9 @@
                 Pantau status pesanan Anda, lacak pengiriman, dan kelola riwayat pembelian 
                 dengan mudah melalui dashboard.
             </p>
-            <a href="/orders" class="feature-btn">Lihat Pesanan</a>
+            <a href="{{ route('dashboard.orders') }}" class="feature-btn">Lihat Riwayat Pesanan</a>
+
+
         </div>
 
         <div class="feature-card">
@@ -623,7 +625,8 @@
                 Simpan sepatu favorit Anda untuk pembelian di kemudian hari. 
                 Dapatkan notifikasi jika ada diskon khusus.
             </p>
-            <a href="/favorites" class="feature-btn">Kelola Favorit</a>
+            <a href="{{ route('dashboard.favorites') }}" class="feature-btn">Daftar Favorit</a>
+
         </div>
 
         <div class="feature-card">
@@ -633,7 +636,10 @@
                 Kelola informasi pribadi, alamat pengiriman, dan preferensi akun Anda. 
                 Pastikan data selalu terbaru.
             </p>
-            <a href="/profile" class="feature-btn">Edit Profil</a>
+            <a href="{{ route('profile.show') }}" class="feature-btn">
+    Profil Saya
+</a>
+
         </div>
 
         <div class="feature-card">
@@ -643,7 +649,9 @@
                 Kumpulkan poin setiap pembelian dan tukarkan dengan diskon menarik. 
                 Semakin sering berbelanja, semakin banyak keuntungan.
             </p>
-            <a href="/rewards" class="feature-btn">Lihat Reward</a>
+            <a href="{{ route('reward.index') }}" class="feature-btn">
+        Reward & Poin
+    </a>
         </div>
 
         <div class="feature-card">
@@ -653,7 +661,7 @@
                 Ada pertanyaan? Tim customer service kami siap membantu Anda 24/7. 
                 Hubungi kami kapan saja.
             </p>
-            <a href="/support" class="feature-btn">Hubungi Kami</a>
+            <a href="{{ route('contact') }}"class="feature-btn">Hubungi Kami</a>
         </div>
     </div>
 </div>

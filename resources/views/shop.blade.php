@@ -68,20 +68,35 @@
         margin-bottom: 15px;
     }
 
-    .add-to-cart-btn {
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        color: white;
+    .action-btn {
         padding: 10px;
         border-radius: 10px;
         text-align: center;
         font-weight: 600;
         text-decoration: none;
         transition: 0.3s ease;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .add-to-cart-btn {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
     }
 
     .add-to-cart-btn:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .favorite-btn {
+        background-color: #ffe4ec;
+        color: #d63384;
+    }
+
+    .favorite-btn:hover {
+        background-color: #ffccda;
+        transform: translateY(-2px);
     }
 </style>
 
@@ -93,7 +108,20 @@
             <div class="product-name">{{ $product->name }}</div>
             <div class="product-desc">{{ $product->description }}</div>
             <div class="product-price">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
-            <a href="#" class="add-to-cart-btn">🛒 Tambah ke Keranjang</a>
+
+            {{-- Tombol Tambah ke Keranjang --}}
+            <form action="{{ route('cart.index') }}" method="GET">
+                <button class="action-btn add-to-cart-btn">
+                    🛒 Tambah ke Keranjang
+                </button>
+            </form>
+
+            {{-- Tombol Tambah ke Favorit --}}
+            <form action="{{ route('favorite.store', $product->id) }}" method="POST">
+                @csrf
+            <button type="submit" class="action-btn favorite-btn">
+                ❤ Tambah ke Favorit</button>
+            </form>
         </div>
     </div>
     @endforeach
