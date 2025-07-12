@@ -650,30 +650,6 @@
         <p>Kelola dan pantau semua pesanan Anda di sini. Lacak status pengiriman, lihat detail pembelian, dan download invoice.</p>
     </div>
 
-    <!-- Orders Statistics -->
-    <div class="orders-stats">
-        <div class="stat-card">
-            <span class="stat-icon">📋</span>
-            <span class="stat-number">0</span>
-            <span class="stat-label">Total Pesanan</span>
-        </div>
-        <div class="stat-card">
-            <span class="stat-icon">⏳</span>
-            <span class="stat-number">0</span>
-            <span class="stat-label">Menunggu</span>
-        </div>
-        <div class="stat-card">
-            <span class="stat-icon">🚚</span>
-            <span class="stat-number">0</span>
-            <span class="stat-label">Dikirim</span>
-        </div>
-        <div class="stat-card">
-            <span class="stat-icon">✅</span>
-            <span class="stat-number">0</span>
-            <span class="stat-label">Selesai</span>
-        </div>
-    </div>
-
     <!-- Filter Section -->
     <div class="filter-section">
         <div class="filter-controls">
@@ -728,7 +704,6 @@
             <div class="order-actions">
                 <a href="#" class="action-btn btn-primary">📄 Invoice</a>
                 <a href="#" class="action-btn btn-secondary">🔄 Beli Lagi</a>
-                <a href="#" class="action-btn btn-secondary">⭐ Review</a>
             </div>
         </div>
 

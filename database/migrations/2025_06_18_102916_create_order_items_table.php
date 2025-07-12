@@ -14,15 +14,17 @@ return new class extends Migration
     Schema::create('order_items', function (Blueprint $table) {
         $table->id();
         $table->unsignedBigInteger('order_id');
-        $table->unsignedBigInteger('produk_id');
+        $table->unsignedBigInteger('product_id'); // kolom yang sesuai
         $table->integer('jumlah');
         $table->decimal('harga', 10, 2);
         $table->timestamps();
 
+        // Relasi ke tabel orders dan products
         $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
-        $table->foreign('produk_id')->references('id')->on('produks')->onDelete('cascade');
+        $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
     });
 }
+
 
 
     /**

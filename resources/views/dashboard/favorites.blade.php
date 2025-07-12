@@ -640,24 +640,6 @@
         </p>
     </div>
 
-    <!-- Favorites Stats -->
-    <div class="favorites-stats">
-        <div class="stats-grid">
-            <div class="stat-item">
-                <span class="stat-number">{{ $favoritesCount ?? 0 }}</span>
-                <span class="stat-label">Total Favorit</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">{{ $availableCount ?? 0 }}</span>
-                <span class="stat-label">Tersedia</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">{{ $discountCount ?? 0 }}</span>
-                <span class="stat-label">Sedang Diskon</span>
-            </div>
-        </div>
-    </div>
-
     <!-- Favorites Actions -->
     <div class="favorites-actions">
         <div class="search-filter">
@@ -679,9 +661,6 @@
                 <option value="vans">Vans</option>
             </select>
         </div>
-        <button class="clear-all-btn" onclick="clearAllFavorites()">
-            🗑 Hapus Semua
-        </button>
     </div>
 
     <!-- Favorites Grid -->
@@ -707,9 +686,12 @@
             <a href="{{ route('product.detail', $favorite->product->id) }}" class="btn-primary">
                 👁 Lihat Detail
             </a>
-            <button class="btn-remove" onclick="removeFromFavorites({{ $favorite->product->id }})">
-                🗑
-            </button>
+            <form action="{{ url('/favorites/' . $favorite->product->id) }}" method="POST" style="display:inline" onsubmit="return confirm('Yakin ingin menghapus dari favorit?')">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="btn-remove">🗑</button>
+</form>
+
         </div>
     </div>
 </div>
@@ -778,7 +760,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add smooth animations for favorite cards
     favoriteCards.forEach((card, index) => {
-        card.style.animationDelay = ${index * 0.1}s;
+        card.style.animationDelay = '${index * 0.1}s';
     });
 
     // Add hover effects to cards

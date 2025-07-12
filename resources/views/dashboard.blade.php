@@ -309,6 +309,24 @@
         }
     }
 
+    .btn-admin {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 12px 25px;
+        background: linear-gradient(135deg, #f59e0b, #f97316);
+        color: white;
+        font-weight: bold;
+        border-radius: 10px;
+        text-decoration: none;
+        transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-admin:hover {
+        background: linear-gradient(135deg, #f59e0b, #ea580c);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
     .quick-stats h3 {
         font-size: 22px;
         font-weight: 700;
@@ -544,6 +562,10 @@
                         <p>{{ Auth::user()->email }}</p>
                     </div>
                 </div>
+
+                <a href="{{ route('produk.index') }}" class="btn-admin">
+    🔧 Kelola Produk
+</a>
                 
                 <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                     @csrf

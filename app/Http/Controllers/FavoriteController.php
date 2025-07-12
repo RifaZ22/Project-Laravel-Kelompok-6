@@ -18,23 +18,20 @@ class FavoriteController extends Controller
 {
     $user = auth()->user();
 
-    // Cek apakah sudah difavoritkan
-    $alreadyFavorited = Favorite::where('user_id', $user->id)
-                                ->where('product_id', $productId)
-                                ->first();
+    $exists = \App\Models\Favorite::where('user_id', $user->id)
+                ->where('product_id', $productId)
+                ->exists();
 
-    if ($alreadyFavorited) {
-        return back()->with('info', 'Produk sudah ada di favorit.');
+    if (!$exists) {
+        \App\Models\Favorite::create([
+            'user_id' => $user->id,
+            'product_id' => $productId,
+        ]);
     }
 
-    // Simpan ke tabel favorit
-    Favorite::create([
-        'user_id' => $user->id,
-        'product_id' => $productId,
-    ]);
-
-    return back()->with('success', 'Produk ditambahkan ke favorit.');
+    return redirect()->back()->with('success', 'Berhasil ditambahkan ke favorit.');
 }
+
 
 
 
@@ -53,11 +50,25 @@ class FavoriteController extends Controller
     return redirect()->back();
 }
 
-public function clearAll()
+public function toggle($productId)
 {
     $user = auth()->user();
-    $user->favorites()->delete();
-    return redirect()->back();
+
+    $favorite = \App\Models\Favorite::where('user_id', $user->id)
+                ->where('product_id', $productId)
+                ->first();
+
+    if ($favorite) {
+        $favorite->delete();
+        return response()->json(['status' => 'removed']);
+    } else {
+        \App\Models\Favorite::create([
+            'user_id' => $user->id,
+            'product_id' => $productId,
+        ]);
+        return response()->json(['status' => 'added']);
+    }
 }
+
 }
 

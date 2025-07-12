@@ -6,6 +6,7 @@ use App\Models\Address;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
@@ -69,4 +70,20 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    public function updatePassword(Request $request)
+{
+    $request->validate([
+        'current_password' => ['required', 'current_password'],
+        'password' => ['required', 'string', 'min:8', 'confirmed'],
+    ]);
+
+    $user = $request->user();
+    $user->update([
+        'password' => Hash::make($request->password),
+    ]);
+
+    return redirect()->back()->with('success', 'Password berhasil diperbarui.');
+}
+
 }

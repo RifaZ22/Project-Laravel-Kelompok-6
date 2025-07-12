@@ -1,5 +1,9 @@
 <?php
 
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
+
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
@@ -29,6 +33,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'showCheckout'])->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'processCheckout'])->name('checkout.proses');
     Route::get('/checkout/konfirmasi', [CheckoutController::class, 'konfirmasi'])->name('checkout.konfirmasi');
+    Route::post('/checkout/beli-sekarang', [CheckoutController::class, 'beliLangsung'])
+    ->name('checkout.direct');
+    Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+    Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+
+    
+
+
 });
 
 Auth::routes();
@@ -41,38 +53,54 @@ require __DIR__.'/auth.php';
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::resource('products', ProductController::class);
+Route::get('/admin/produk', [ProductController::class, 'index'])->name('produk.index');
+
 
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('product.detail');
 
-Route::get('/shop', [ShopController::class, 'index'])->name('shop');
+Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
 
 
 Route::get('/dashboard/orders', [OrderController::class, 'index'])->name('dashboard.orders');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['web', 'auth'])->group(function () {
     Route::get('/dashboard/favorites', [FavoriteController::class, 'index'])->name('dashboard.favorites');
     Route::delete('/favorites/{id}', [FavoriteController::class, 'remove']);
-    Route::delete('/favorites/clear', [FavoriteController::class, 'clearAll']);
+    Route::delete('/favorites/clear', [FavoriteController::class, 'clearAll'])->name('favorites.clear');
 
     Route::post('/favorite/{productId}', [FavoriteController::class, 'store'])->name('favorite.store');
 
-    Route::middleware('auth')->group(function() {
+    Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+    Route::get('/dashboard/orders', [OrderController::class, 'index'])->name('dashboard.orders');
+    Route::get('/dashboard/favorites', [FavoriteController::class, 'index'])->name('dashboard.favorites');
+    Route::delete('/favorites/{id}', [FavoriteController::class, 'remove']);
+    Route::delete('/favorites/clear', [FavoriteController::class, 'clearAll'])->name('favorites.clear');
+    Route::post('/favorite/{productId}', [FavoriteController::class, 'store'])->name('favorite.store');
+
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
     Route::get('/profile/addresses/create', [AddressController::class, 'create'])->name('profile.addresses.create');
-
     Route::post('/profile/addresses', [AddressController::class, 'store'])->name('profile.addresses.store');
+    Route::post('/favorite/{productId}', [FavoriteController::class, 'store'])->name('favorite.store');
 
-    // Tampilkan halaman Hubungi Kami
-Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
-// Tangani form kirim pesan (tanpa menyimpan ke database)
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
-Route::get('/dashboard/reward', [RewardController::class, 'index'])->name('reward.index');
+    Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+    Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
+    Route::get('/dashboard/reward', [RewardController::class, 'index'])->name('reward.index');
+
+    Route::get('/checkout', [CheckoutController::class, 'showCheckout'])->name('checkout.index');
+    Route::post('/checkout', [CheckoutController::class, 'processCheckout'])->name('checkout.proses');
+    Route::get('/checkout/konfirmasi', [CheckoutController::class, 'konfirmasi'])->name('checkout.konfirmasi');
 });
+
 });
 
 
